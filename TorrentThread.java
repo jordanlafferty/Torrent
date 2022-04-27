@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.net.Inet4Address;
 
 public class TorrentThread extends Thread
 {
@@ -20,6 +21,8 @@ public class TorrentThread extends Thread
             this.clientSocket = clientSocket;
             this.textInput = new Scanner(this.clientSocket.getInputStream());
             this.textOutput = new PrintStream(this.clientSocket.getOutputStream());
+            String x = Inet4Address.getLocalHost().getHostAddress();
+            CORE.addIP(x);
             CORE.addPS(textOutput);
         }
         catch(Exception e)
@@ -33,6 +36,6 @@ public class TorrentThread extends Thread
         String torrentName = this.textInput.nextLine();
         String ip_address = this.textInput.nextLine();
         String port_number = this.textInput.nextLine();
-        CORE.addIP(ip_address);
+       
     }
 }
