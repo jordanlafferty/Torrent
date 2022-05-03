@@ -19,12 +19,15 @@ public class TrackerThread extends Thread
             Scanner clientInput = new Scanner(this.theClient.getInputStream());
             PrintStream clientOutput = new PrintStream(this.theClient.getOutputStream());
             String newClientIP = clientInput.nextLine();
-            CORE.changeConnectedClientIPs(newClientIP, true);
+            int newClientPortNumber = CORE.getNextClientPort();
+            clientOutput.println(newClientPortNumber);
+            String newClientIP_Port = newClientIP + ":" + newClientPortNumber;
+            CORE.changeConnectedClientIPs(newClientIP_Port, true);
             String connectedClients = CORE.getConnectedClientIPsString();
             clientOutput.println(connectedClients);
             CORE.broadcastStringToClients(connectedClients);
             CORE.addPrintStream(clientOutput);
-            
+
             while(true){}
             //get the IP address of our connect client
             //add it to our list of peers, then broadcast
@@ -34,4 +37,5 @@ public class TrackerThread extends Thread
         catch(Exception e){}
        
     }
+
 }

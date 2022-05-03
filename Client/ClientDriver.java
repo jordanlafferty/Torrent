@@ -23,10 +23,17 @@ public class ClientDriver
         Scanner socketInput = new Scanner(s.getInputStream());
         PrintStream socketOutput = new PrintStream(s.getOutputStream());
         socketOutput.println(Inet4Address.getLocalHost().getHostAddress());
+        String myPortNumber = socketInput.nextLine();
         String listOfConnectedClients = socketInput.nextLine();
         ClientCORE.updateTheConnectedClientIPs(listOfConnectedClients);
-        System.out.println(listOfConnectedClients);
         
+        //maintain the connection with the tracker to get updates on
+        //connected clients
+        (new ClientTrackerListenerThread(socketInput)).start();
+        
+        //create a server thread to establish connections with the Swarm
+        (new ClientServerThread(Integer.parseInt(myPortNumber))).start();
+
         //In our main thread here, we want to start the torrent process of sharing bits
         while(true){}
         

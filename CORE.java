@@ -6,10 +6,16 @@ public class CORE
 {
     private static ArrayList<String> theConnectedClientIPs = new ArrayList<String>();
     private static ArrayList<PrintStream> theClientPrintStreams = new ArrayList<PrintStream>();
-
+    private static int currentClientPort = 3000;
+    
     public static synchronized void addPrintStream(PrintStream ps)
     {
         CORE.theClientPrintStreams.add(ps);
+    }
+
+    static public synchronized int getNextClientPort()
+    {
+        return CORE.currentClientPort++;
     }
 
     public static void broadcastStringToClients(String s)
