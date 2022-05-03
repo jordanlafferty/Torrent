@@ -4,70 +4,56 @@ import java.util.ArrayList;
 
 public class CORE 
 {
-    private static ArrayList<DataOutputStream> theClientDOSsss= new ArrayList<DataOutputStream>();
-    private static ArrayList<String> IPList= new ArrayList<String>();
-    private static ArrayList<PrintStream> theClientStreams = new ArrayList<PrintStream>();
+    private static ArrayList<String> theConnectedClientIPs = new ArrayList<String>();
+    private static ArrayList<PrintStream> theClientPrintStreams = new ArrayList<PrintStream>();
 
-    public synchronized static void addDOS(DataOutputStream dos)
+    public static synchronized void addPrintStream(PrintStream ps)
     {
-        CORE.theClientDOSsss.add(dos);
+        CORE.theClientPrintStreams.add(ps);
     }
-    
-    public static synchronized void removeReceivers()
+
+    public static void broadcastStringToClients(String s)
     {
-        for(DataOutputStream dos : CORE.theClientDOSsss)
+        for(PrintStream ps : CORE.theClientPrintStreams)
         {
-            try 
-            {
-                dos.close();
-            } 
-            catch (Exception e) 
-            {
-                
-            }
-            
+            ps.println(s);
         }
-        CORE.theClientDOSsss.clear();
     }
 
-    public synchronized static void broadCastByte(byte b)
+    public static String getConnectedClientIPsString()
     {
-        try
+        String answer = "";
+        for(int i = 0; i < CORE.theConnectedClientIPs.size(); i++)
         {
-            for(DataOutputStream dos : CORE.theClientDOSsss)
+            if(answer.length()==0)
             {
-                dos.writeByte(b);
+                answer = answer + CORE.theConnectedClientIPs.get(i);
+            }
+            else
+            {
+                answer = answer + "," + CORE.theConnectedClientIPs.get(i);
             }
         }
-        catch(Exception e)
+        return answer;
+    }
+
+    public static synchronized void changeConnectedClientIPs(String ip, boolean shouldAdd)
+    {
+        //if shouldAdd is true, we are adding the ip, else we are removing the IP
+        if(shouldAdd)
         {
-            e.printStackTrace();
+            CORE.theConnectedClientIPs.add(ip);
+        }
+        else
+        {
+            for(int i = 0; i < CORE.theConnectedClientIPs.size(); i++)
+            {
+                if(CORE.theConnectedClientIPs.get(i).equals(ip))
+                {
+                    CORE.theConnectedClientIPs.remove(i);
+                    return;
+                }
+            }
         }
     }
-
-    public synchronized static void addIP(String IP)
-    {
-        CORE.IPList.add(IP);
-    }
-    public static synchronized void addPS(PrintStream ps)
-    {
-       
-        System.out.println("adding client thread");
-        CORE.theClientStreams.add(ps);
-        
-
-
-    }
-
-    public static void broadcastIP()
-    {
-        System.out.println("About to broadcast....");
-        for (PrintStream ps : CORE.theClientStreams)
-        {    
-          
-            ps.println(CORE.IPList);
-
-        }
-    }
-
 }

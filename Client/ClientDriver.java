@@ -20,14 +20,15 @@ public class ClientDriver
     public static void main(String[] args) throws Exception
     {
         Socket s = new Socket(TRACKERIP, TRACKERPORT);
-        //needs to tell the tracker about his IP address
-        System.out.println(Inet4Address.getLocalHost().getHostAddress());
-        /*
-        String torrentName = "cambria.jpeg";
-        PrintStream textOutputOverSocket = new PrintStream(s.getOutputStream());
-        textOutputOverSocket.println(torrentName);
-        textOutputOverSocket.println("ip address") //HOW DO WE GET OUT IP!!!!!!
-        textOutputOverSocket.println("" + ClientCORE.getNextPortNumber());
-        */
+        Scanner socketInput = new Scanner(s.getInputStream());
+        PrintStream socketOutput = new PrintStream(s.getOutputStream());
+        socketOutput.println(Inet4Address.getLocalHost().getHostAddress());
+        String listOfConnectedClients = socketInput.nextLine();
+        ClientCORE.updateTheConnectedClientIPs(listOfConnectedClients);
+        System.out.println(listOfConnectedClients);
+        
+        //In our main thread here, we want to start the torrent process of sharing bits
+        while(true){}
+        
     }
 }
