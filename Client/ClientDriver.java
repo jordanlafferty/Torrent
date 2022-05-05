@@ -1,5 +1,6 @@
 package Client;
 
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -29,7 +30,7 @@ public class ClientDriver
         
         //maintain the connection with the tracker to get updates on
         //connected clients
-        (new ClientTrackerListenerThread(socketInput)).start();
+        (new ClientTrackerListennerThread(socketInput)).start();
         
         //create a server thread to establish connections with the Swarm
         (new ClientServerThread(Integer.parseInt(myPortNumber))).start();

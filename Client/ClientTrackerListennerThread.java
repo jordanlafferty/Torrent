@@ -1,11 +1,11 @@
 package Client;
 import java.util.Scanner;
 
-public class ClientTrackerListenerThread extends Thread
+public class ClientTrackerListennerThread extends Thread
 {
     private Scanner trackerInput;
 
-    public ClientTrackerListenerThread(Scanner trackerInput)
+    public ClientTrackerListennerThread(Scanner trackerInput)
     {
         this.trackerInput = trackerInput;
     }
